@@ -1,0 +1,1128 @@
+﻿● foreach用法
+--------------------------------------------------------
+public string[] Story = new string[]{"HI","Ya","Bye"};
+
+void Start()
+{
+  foreach(string s in Story)
+  {
+	Debug.Log(s);
+  }
+}
+--------------------------------------------------------
+
+
+● 簡短If else用法
+--------------------------------------------------------
+int health = 10;
+string message;
+
+(簡短寫法)
+message = health > 0 ? "Player is Alive" : health == 0 ? "Player No HP" : "Player is Dead" ;
+Debug.Log (message);
+
+(平常寫法)
+if(health >0)
+{
+  message = "Player is Alive";
+}
+else if(health == 0)
+{
+  message = "Player No HP";
+}
+else
+{
+  "Player is Dead"
+}
+
+
+//簡短的IF判斷式
+public Text coinTxt;
+private int  amount = 0;
+
+void FixedUpdate () 
+{	
+	coinTxt.text = "Coin: " + ((amount > 9) ? ("" + amount) : ("0" + amount));
+}
+	/*如果amount > 9,則值等於("" + amount),否則值等於("0" + amount)
+	  兩個回傳值的格式要相同,否則無法執行 
+	  錯誤:?     amount    : ("0" + amount);
+	  正確:? ("" + amount) : ("0" + amount);
+--------------------------------------------------------
+
+
+● Get & Set
+--------------------------------------------------------
+(1)
+   private int myAge;
+   public int usemyAge
+   { 
+     get
+     {
+       return myAge;
+     }
+     set
+     {
+       myAge = value *2;
+     }
+   }
+
+ //用法
+ usemyAge = 10;       // Set 設定myAge的值
+ Debug.Log(usemyAge); // Get 取得myAge的值
+
+
+(2)
+   public int usemyAge { get; set;}
+ 
+   //用法
+   usemyAge = 10;       // Set 設定myAge的值
+   Debug.Log(usemyAge); // Get 取得myAge的值
+   
+
+(3)
+   public int usemyAge { get; private set;}
+
+   //只有同一個Class下才能設定myAge的值
+   //其他Class只能取得myAge的值
+
+(4)
+   public bool faceRight
+   {
+        get
+        {
+            return transform.eulerAngles.x == 0f;
+        }
+        set
+        {
+            Vector3 euler = transform.eulerAngles;					    
+            euler.y = (value) ? 0f : 180f;  //如果Value有值為True空值為false
+                                              (不適合用在多重IF 耗效能 不易維護)
+            transform.eulerAngles = euler;
+        }
+   }
+--------------------------------------------------------
+
+
+● 列舉 enum
+-----------------------------------------------
+//enum不能於方法內宣告
+  資料型別必須是byte、sbyte、short、ushort、int、unit、long或ulong型別預設的預料型別為int
+  float與double不可為enum的資料型別
+
+  public enum Xeer
+  {         //↓類似陣列的概念
+   t1 = 5,  //第0個位置
+   t2 = 3,  //第1個位置
+   t3 = 1   //第2個位置
+  }
+
+用法：(1) public Xeer useXeer; //Unity的Inspector的變數useXeer就有選擇t1,t2,t3的選項
+
+      (2) public Xeer useXeer = Xeer.t1; //宣告時直接指定
+
+      (3) if(Input.GetKeyDown(KeyCode.Space)) //按下空白鍵切換useXeer裡的值
+	  {
+		useXeer = (Xeer)Random.Range(0,3); //(Xeer)轉成Xeer型態 
+	  }
+
+範例：
+      
+      //宣告一個Enum並定義內容
+      public enum myEnum
+      {
+          A,
+          B,
+          C,
+          D
+      }
+
+      //宣告一個在Unity屬性頁面上操作的變數
+      public myEnum x;
+
+      //用數字切換Enum目前的值
+      if (Input.GetKeyDown(KeyCode.Z))
+      {
+        x = (mylist)Random.Range(0, 4);
+      }
+-----------------------------------------------
+
+
+● List
+-----------------------------------------------
+  using System.Collections.Generic; //添加在程式碼最上面
+  public List<int> num = new List<int>(); //宣告 List<變數類型> num = new List<變數類型>();
+
+  (1) Debug.Log (num.Count); //目前List裡有幾個值
+
+  (2)
+     if(Input.GetKeyDown(KeyCode.Space))
+     {
+       num.Add(Random.Range(1,100)); //添加新的值(亂數值)
+     }
+
+     if(Input.GetKeyDown(KeyCode.Q))
+     {
+       num.Remove(num[Random.Range(0,num.Count)]); //隨機刪除List裡的"一個"值
+     }
+
+  (3)
+     num.Add (1); //在List裡添加 1 這個值
+     num.Add (2);
+     num.Add (3);
+
+  (4)
+     Debug.Log (num[0]); //顯示List的第一個值
+
+  (5)
+     <常用語法>
+     using System.Collections.Generic;
+
+     public List<int> x = new List<int>();
+
+     //增加新的值
+     x.Add(Random.Range(1, 101))
+
+     //刪除全部
+     x.Clear();
+
+     //排序 Int類型由小到大  string類型由A到Z
+     x.Sort();
+
+     //顛倒排序 1 2 3 變成 3 2 1
+     x.Reverse();
+
+     //刪除某一值
+     x.RemoveAt(0);           //刪除第一個值
+     x.RemoveAt(x.Count - 1); //刪除最後一個值
+-----------------------------------------------
+
+
+● Dictionary
+-----------------------------------------------
+  using System.Collections.Generic; //添加在程式碼最上面
+
+  (1)//宣告
+     Dictionary<string, int> myDictionary = new  Dictionary<string, int>();  
+     Dictionary<string, string> myDictionary = new  Dictionary<string, string>();
+     Dictionary<int, int> myDictionary = new  Dictionary<int, int>();
+     Dictionary<string, object> myDictionary = new  Dictionary<string, object>();
+
+  (2)//新增值
+     myDictionary.Add (0, "Ya");
+     
+  (3)
+     Debug.Log (myDictionary.Count);//顯示Dictionary有幾個值
+
+  (4)//myDictionary.Add (0, "Ya");  
+       myDictionary.Add (1, "oh");
+       myDictionary.Add (2, "wow");
+       myDictionary.Add (3, "fuck");
+
+     ==================================================
+     //關鍵字：myDictionary.ContainsKey
+     if(myDictionary.ContainsKey(0))  //搜尋Dictionary<int, string>裡， int值(key)為0的那一欄
+     {
+	string x = myDictionary[0];  //把Dictionary<int, string>裡，string值(value)給予變數x
+	Debug.Log(x);
+     }
+     //*如果是 <string, int>的話就是搜尋string的值，把int給變數x
+     ==================================================
+
+     ==================================================
+     //關鍵字：myDictionary.ContainsValue
+     if(myDictionary.ContainsValue("fuck"))  
+     {
+	Debug.Log("find out");
+     }
+     ================================================== 
+     
+     <int  , string>  //前面是Key
+     <(Key),(Value)>  //後面是Value
+
+  (5)//用foreach顯示Dictionary<int, string>的值
+     foreach(KeyValuePair<int, string> x in myDictionary)
+     {
+	string s = x.Key + " & " + x.Value;
+	Debug.Log (s);
+     }
+
+-----------------------------------------------
+
+
+
+● delegate (委外)
+-----------------------------------------------
+    (1)
+    delegate void MyDelegate(int num);  //建立一個委外(有傳值要先宣告類型)
+    MyDelegate myDelegate;
+
+    void Start()
+    {
+      myDelegate = PrintNum;  //將PrintNum交由委外
+      myDelegate(50);         //執行委外
+      
+      myDelegate = DoubleNum; //將DoubleNum交由委外，PrintNum被覆蓋過去。
+      myDelegate(50);         //執行委外
+    }
+
+    void PrintNum(int num)
+    {
+      print("Print Num :" + num);
+    }
+
+    void DoubleNum(int num)
+    {
+      print("Double Num :" + num*2)
+    }
+
+
+    (2)
+    delegate void MultiDelegate();  //建立一個委外
+    MultiDelegate myMultigate;
+
+    void Start()
+    {
+      myMultigate += PowerUp; /* 兩個Class委外 
+      myMultigate += TurnRed;      一起執行   */
+
+      myMultigate();    //執行委外
+    }
+
+    void PowerUp()
+    {
+      print("Orb is powering up!");
+    }
+
+    void TurnRed()
+    {
+      renderer.material.color = Color.red;
+    }
+
+    
+    (3)
+  --A物件的腳本--
+  public int LightHand()
+  {
+      print("輕拳");
+      return 5;
+  }
+
+  public int LightLag(int range)
+  {
+      print("輕腿");
+      return 3;
+  }
+ 
+  public B ChaB; // B的腳本
+  void Update()
+  {
+    if (Input.GetKeyDown(KeyCode.Alpha4))
+    {
+        ChaB.HitDelegate(LightHand);  //將輕拳函式傳遞給B
+    }
+    if (Input.GetKeyDown(KeyCode.Alpha7))
+    {
+        ChaB.HitLegDelegate(LightLag);  //將輕腿函式傳遞給B
+    }
+  }
+
+  --沒有掛在任何物件的腳本--
+  public delegate int TestDelegate();         //拳攻擊 委派
+  public delegate int TestLegDelegate(int r); //腿攻擊 委派   
+ 
+  --B物件的腳本--
+  public int Hp = 100;
+  public int Range = 5;
+
+  public void HitDelegate(TestDelegate td)
+  {
+        Hp -= td();
+        print("Hp用拳委派剩餘血量 :" + Hp);
+  }
+
+   
+ 
+  public void HitLegDelegate(TestLegDelegate tld)
+  {
+        Hp -= tld(Range);
+        print("Hp用腿委派剩餘血量 :" + Hp);
+  }
+
+  ※B物件函式宣告傳入的值是委派類型的變數，該變數被定義在--沒有掛在任何物件的腳本--裡
+    所以A腳本傳值給B的函式時，傳入的函式規格必須符合B的定義
+  ※本範例有兩種方式：沒有傳值 與 有傳值 的樣子
+  ※委派的目的是：如果要寫新的攻擊方式，只需要在A腳本新增就好，不必在到B腳本新增判斷式
+    方便維護與更新
+
+
+    (4)
+  <筆記>
+  
+  委派          回傳        可以使用參數數量
+  ----          ----        ----------------
+  delegate      無or自訂         0 ~ 32
+  action        無               0 ~ 16
+  func          自訂             0 ~ 16
+
+
+  <委派用法之 - action>
+  //A腳本
+  using System;
+  public CallbackB CB;
+  void Update()
+  {
+     if (Input.GetKeyDown(KeyCode.Alpha2))
+     {
+       Action<string, int> cba = Callbackaction;
+       CB.ActionTest(cba);
+     }
+  }
+
+  public void Callbackaction(string name, int hurt)
+  {
+      print("i'm A , i hit " + name + " , hurt :" + hurt);
+  }
+
+  //B腳本
+  using System;
+  public void ActionTest(Action<string, int> a)
+  {
+        print("B : 被呼叫");
+        a("B", 100);
+  }
+
+
+  <委派用法之 - func>
+  //A腳本
+  using System;
+  public CallbackB CB;
+
+  void Update()
+  {
+      if (Input.GetKeyDown(KeyCode.Alpha3))
+      {
+          Func<string, int, int> f = Attack;
+          CB.Hit(f);
+      }
+  }
+
+  public int Attack(string name, int defense)
+  {
+      print("im hit " + name + ", defense :" + defense);
+      int damage = 999 - defense;
+      return damage;
+  }
+
+  //腳本B
+  //                                 ↓最後一個為回傳值
+  public void Hit(Func<string, int, int> f)
+  {
+     print("Im B");
+     int damage = f("B", 100);
+  }
+-----------------------------------------------
+
+
+● ArrayList 陣列
+-----------------------------------------------
+    ArrayList myArrayList = new ArrayList(); //宣告
+
+    (1)新增值
+       myArrayList.Add (3);    //位置第0
+       myArrayList.Add ("OK"); //位置第1
+               .
+               .
+               .
+
+    (2)更改值 *要先新增值才能更改
+       myArrayList [0] = "Ya";
+       myArrayList [1] = 666;
+
+    (3)陣列有幾個值
+       int arraySize = myArrayList.Count;
+
+    (4)刪除值
+       myArrayList.RemoveAt (0);  //0 一>第幾個位置
+-----------------------------------------------
+
+● 繼承
+-----------------------------------------------
+(1)  
+  Class Creature //生物 被繼承的物件
+  {
+	private int hp = 100;
+	
+	public int GetHP()
+	{
+		return hp;
+	}
+  }
+
+  Class Monster : Creature //怪物  ( : 要繼承的Class名字)
+  {
+	public int Attack()
+	{
+		returen 10;
+	}
+  }
+
+  在其他程式可以新增一隻怪物，且怪物具有Class生物裡的屬性
+  Monster mon1 = new Monster();
+  mon1.GetHP(); // Class Creature裡的method
+-----------------------------------------------
+
+● Override多載
+-----------------------------------------------
+(1)
+  Class 生物 // 被繼承的物件
+  {
+	private int hp = 100;
+	
+	public int GetHP()
+	{
+		return hp;
+	}
+
+	public virtual string Attack(生物 target) // 2.在要複寫的method加上 "virtual"
+	{
+		returen name + "攻擊了" + target.name;
+	}
+  }
+
+  Class 村民 : 生物 //村民 繼承 生物 但不想要有 Attack的功能
+  {
+	public override string Attack(生物 target) // 1.先從Class生物 複寫一遍Attack
+	{				        // 2.在複寫的Class加上 "override"
+		returen name + "不能攻擊任何東西";
+	}
+  }
+
+  ※virtual 和 override 的method名稱和輸入的變數皆要相同,否則出現編譯問題
+
+
+(2)
+  //複寫 函式:複寫父類別
+  public override void Eat()
+  {
+      //載入父類別內容，會執行父類別原本的程式碼
+      //如果是要重寫新的，這段可以移除
+      base.Eat(); 
+      
+      //想要新增的功能
+      transform.Translate(0, 0, 1f);  
+  }
+-----------------------------------------------
+
+● base 用在繼承、覆寫 (this代表這個Class的某個變數、bass代表被繼承的Class的某個變數)
+-----------------------------------------------
+  Class 生物
+  {
+	public virtual string SaySomething()
+	{
+		return "我是生物喔!";
+	}
+  }
+
+  Class 史萊姆 : 生物
+  {
+	public override string SaySomething()  //想要覆寫的同時,又想保留父物件的設定
+	{
+		return bass.Saysomething() + "我是一隻史萊姆";
+	}
+  }
+
+  ==>輸出結果 : 我是生物喔!我是一隻史萊姆
+
+※如果父物件有建構子要傳入值，在子物件的建構子加上 : base(輸入的參數值)
+-----------------------------------------------
+
+
+● 陣列
+-----------------------------------------------
+  using System.Linq;
+ 
+  print("最小值 : " + Array.Min());  //找出陣列中最小值
+  print("最大值 : " + Array.Max());  //找出陣列中最大值
+  print("總　和 : " + Array.Sum());  //計算陣列內值總和
+-----------------------------------------------
+
+
+● 全域變數
+-----------------------------------------------
+  (1)static 靜態 切場景不歸零 
+  (2)const   常數 不能更改 EX: 3.14159...
+
+  //擊殺數量
+  public static int CountSlime;
+
+    
+  //角色攻擊力
+    
+  public const int AttackKnight = 1;
+-----------------------------------------------
+
+
+● Interface
+-----------------------------------------------
+  (1)新增一個腳本，把所有內容都移除，新如下↓
+  public interface IRun
+  {
+    void Run();
+    void RunSlow();
+    void RunFast();
+  }
+
+  (2)腳本A
+                        第一行為"繼承"  第二行之後都是Interface 
+                          ↓            ↓
+  public class CatOne : MonoBehaviour, IRun
+{
+    public void Run()
+    {
+        transform.Translate(0, 0, 0.1f);
+    }
+
+    public void RunFast()
+    {
+        transform.Translate(0, 0, 1f);
+    }
+
+    public void RunSlow()
+    {
+        transform.Translate(0, 0, 0.01f);
+    }
+  }
+
+  (3)腳本B
+  public class DogOne : MonoBehaviour, IRun
+  {
+    public void Run()
+    {
+        transform.Translate(0, 0, 0.1f);
+        transform.Rotate(0, 60f, 0);
+    }
+
+    public void RunFast()
+    {
+        transform.Translate(0, 0, 0.1f);
+        transform.Rotate(0, 120f, 0);
+    }
+
+    public void RunSlow()
+    {
+        transform.Translate(0, 0, 0.1f);
+        transform.Rotate(0, 6f, 0);
+    }
+  }
+
+  (4)腳本C  (測試用途)
+  public IRun Cat1;
+  public IRun Dog1;
+   
+  void Start ()
+  {
+      Cat1 = GameObject.Find("Cat").GetComponent<IRun>();
+      Dog1 = GameObject.Find("Dog").GetComponent<IRun>();
+  }
+
+  void Update ()
+  {
+      if (Input.GetKey(KeyCode.Mouse0))
+          Cat1.Run();
+       
+      if (Input.GetKey(KeyCode.Mouse1))
+          Dog1.Run();
+  }
+
+  
+  <Interface應用>
+  1. using UnityEngine.EventSystems;
+
+  2. 在 : MonoBehaviour後面加上一個Interface
+        「 UnityEngine.EventSystems.IPointerEnterHandler」
+
+
+  3. 補上Interface宣告的函式
+   public void OnPointerEnter(PointerEventData eventDate)
+   {
+	print("Nowing");
+   }
+
+  ※之後將腳本掛在UI物件上，滑鼠移到物件就會執行程式碼
+  ※關鍵字：UnityEngine.EventSystems → Interfaces
+          可以找到每個Interface裡含有的函式名稱和用法
+-----------------------------------------------
+
+
+● struct
+-----------------------------------------------
+  Interface 同個函式可以在多個物件處理個別量身訂做的事件
+
+  struct    同個函式在多個物件處理同樣的事件
+          
+  兩個功能差不多，需要處理多個同名字不同事件的函式，
+  時就用Interface
+
+  舉例: 
+
+  <struct 的程式碼>
+  public struct CharacterValue
+  {
+    public float Hp;
+    public float Mp;
+    public float Speed;
+    public float Defense;
+    public bool Dead;
+  }
+
+  <其他物件的程式碼>
+  public CharacterValue CV;
+
+  void GetHurt()   //來自Interface 的 IHurt
+  {
+        CV.Hp -= 50;
+  }
+
+  /*  -------------------------------
+      如果小騎士身上的腳本 和 怪物身上的腳本 名字不相同
+      那GetComponent就無法抓到個別物件身上的CV變數值，
+      這時就需要用到Interface來搭配CV處理事件
+      void Tst()
+      {
+          GetComponent<BlueCube>().CV.Hp = 50;
+      }
+  */  -------------------------------
+-----------------------------------------------
+
+
+● Hashtable 另一種陣列
+-----------------------------------------------
+  <宣告>
+  public Hashtable Attacks = new Hashtable()
+  {
+        { "Knight",2},
+        { "Slime", 1},
+        { "Dragon", 5}
+  };
+
+  //調用
+  Attack = (int)LearnStatic.Attacks[名字];
+  ※名字 = Knight、Slime、Dragon
+  ※與平常用的陣列不同，是用0 ~ Array[].length -1的編號來存取、調用
+    Hashtable直接用第一個欄位的值作為索引
+    且沒有限制型態
+
+  <新增>
+  Defends.Add("Boss", 20);
+
+  <移除>
+  Defends.Remove("Boss");
+
+  <判斷值是否存在>
+  //回傳bool
+  Defends.Contains("Boss"); 
+
+  <計算陣列長度>
+  print(Defends.Count);
+
+  <foreach跑出所有的值>
+  //int 代表第二的值的型態是int類型的
+  foreach(int d in Defends.Values)
+  {
+    print("值: " + d);
+  }
+-----------------------------------------------
+
+
+
+● 其他種類的陣列
+-----------------------------------------------
+  <Queue>  : 先進先出
+
+  //程式碼
+  //引用泛型
+  using System.Collections.Generic;  
+  
+  //宣告並實例排序陣列
+  public Queue<int> Scores = new Queue<int>();
+  
+  void Start()
+  {
+      //增加資料
+      Scores.Enqueue(10);    
+      Scores.Enqueue(20);
+      Scores.Enqueue(30);
+  }
+
+  void Update()
+  {
+      if (Input.GetKeyDown(KeyCode.Alpha1))
+      {
+	  //取出第一筆資料
+          print("使用Queue的Peel :" + Scores.Peek());
+      }
+
+      //                                         ↓預防陣列是否已經變成空的
+      if (Input.GetKeyDown(KeyCode.Alpha2) &&　Names.Count >0)
+      {
+          //取出並刪除第一筆
+          print("使用Queue的Dequeue :" + Scores.Dequeue());  
+      }
+  }
+
+
+  <Stack>  : 後進先出
+  //程式碼
+  //引用泛型
+  using System.Collections.Generic;
+
+  public Stack<string> Names = new Stack<string>(new string[] { "Apple", "Banana"});
+  void Start()
+  {
+      //堆疊增加資料
+      Names.Push("Watermelon");  
+  }
+
+  void Update()
+  {
+      if (Input.GetKeyDown(KeyCode.Alpha3) &&　Names.Count >0)
+      {
+	  //取出第一筆資料
+          print("使用Stack的Peek :" + Names.Peek());
+      }
+
+      //                                         ↓預防陣列是否已經變成空的
+      if (Input.GetKeyDown(KeyCode.Alpha4) &&　Names.Count >0)
+      {
+	  //取出並刪除第一筆
+          print("使用Stack的Peek :" + Names.Pop());
+      }
+  }
+
+
+  <Queue & Stack  進階說明>
+
+  佇列(Queue)是用先進先出的方式處理物件的集合，例如到銀行排隊，先排的人先處理。
+  堆疊(Stack )是後進先出的集合，例如玩撲克牌排遊戲時，發牌時是從整疊的最上一張拿取。
+
+  佇列(Queue)常用的方法如下:
+
+  名稱	  說明
+  Count	  取得佇列中目前的項目數量
+  Dequeue 從佇列前端取出一個項目，同時將其移除
+  Enqueue 從佇列尾端加入一個項目
+  Peek	  從佇列前端取出一個項目，但不移除
+ 
+
+  堆疊(Stack)常用的方法如下:
+
+  名稱	  說明
+  Count	  取得堆疊中目前的項目數量
+  Pop	  從堆疊最頂端取出一個項目，同時將其移除
+  Push	  從堆疊最頂端加入一個項目
+  Peek	  從堆疊最頂端取出一個項目，但不移除
+
+
+  <使用佇列 Queue 類別步驟如下>
+
+  1.匯入System.Collections命名空間
+    using System.Collections;
+
+  2.引用Queue類別
+    Queue myQueue = new Queue();
+
+  3.用Enqueue加入佇列
+    myQueue.Enqueue("加入第一個項目");
+    myQueue.Enqueue("加入第二個項目");
+    myQueue.Enqueue("加入第三個項目");
+    myQueue.Enqueue("加入第四個項目");
+
+  4.用Dequeue讀取佇列
+    while (myQueue.Count > 0)
+    {
+     Console.WriteLine(myQueue.Dequeue());
+    }
+
+  <使用佇列 Stack 類別步驟如下>
+
+  1.匯入System.Collections命名空間
+    using System.Collections;
+
+  2.引用Stack類別
+    Queue myQueue = new Queue();
+
+  3.用Push加入堆疊
+    myStack.Push("加入第一個項目");
+    myStack.Push("加入第二個項目");
+    myStack.Push("加入第三個項目");
+    myStack.Push("加入第四個項目");
+ 
+  4.用Pop讀取佇列
+    while (myStack.Count > 0)
+    {
+     Console.WriteLine(myStack.Pop());
+    }
+
+
+
+  <範例：用Queue 讓螢幕上每3秒跑出一個Text>
+
+  private Queue eventQ = new Queue(); //宣告一個Queue
+  public bool isAct;
+
+  public GameObject PreObj;   //放Text的物件
+  public Transform ParentTrs; //將Canvas放入
+
+  void Start()
+  {
+     EnQEvent("1");
+     EnQEvent("2");
+     EnQEvent("3");
+     EnQEvent("4");
+  }
+
+  void EnQEvent(string str)
+  {
+     eventQ.Enqueue(str);                 //將新的字串加入"佇列"
+     StartCoroutine("EventActManager");   
+  }
+
+  IEnumerator EventActManager()
+  {				         //isAct代表這個函式有沒有在執行
+      if (isAct || eventQ.Count == 0)    //如果 這個函式還在執行 或 Queue佇列裡已經沒有東西
+          yield break;		         //就跳出整個函式
+      else
+          isAct = true;
+
+      yield return StartCoroutine(CreateTextEvent((string)eventQ.Dequeue()));    //(string)eventQ.Dequeue()
+									         //將eventQ佇列的資料轉型成string
+      if (eventQ.Count == 0)
+          isAct = false;
+      else
+      {
+          isAct = false;
+          StartCoroutine("EventActManager");
+      }
+  }
+
+  IEnumerator CreateTextEvent(string str)
+  {
+      GameObject obj = Instantiate(PreObj, new Vector3(0, 150, 0), Quaternion.identity) as GameObject;
+      obj.GetComponent<Text>().text = str;
+      obj.transform.SetParent(ParentTrs, false);  //將生成的Text物件指定為Canvas下的子物件
+						  //SetParent(父物件座標, 是某參照父物件座標重新定義自己的座標)
+						  //一般都是不參照父物件座標，不然執行時可能會和原先自己設定的結
+						  //果有一些出入
+      yield return new WaitForSeconds(3);
+  }
+-----------------------------------------------
+
+
+● out 和 ref
+-----------------------------------------------
+  <Out>
+  
+  //舉例:
+  public float RandomPos()
+  {
+    float rX = Random.Range(0f, 5f);
+    float rY = Random.Range(0f, 5f);
+    float rZ = Random.Range(0f, 5f);
+
+    return rX, rY, rZ;
+  }
+
+  ↑以上是 "錯誤" 的格式，一般的函式
+    return 無法回傳多個值
+  
+  
+  //腳本 : LearnOut -- Out版本的寫法
+  public void RandomPos(out float x, out float y)
+  {
+    x = Random.Range(0f, 5f);
+    y = Random.Range(0f, 5f);
+  }
+
+
+  //另一個腳本
+  public LearnOut LO;
+  void Update()
+  {
+    if(Input.GetKeyDown(KeyCode.A))
+    {
+      float tempX, tempY;
+      LO.RandomPos(out tempX, out tempY);
+      print("tempX 值: " + tempX);
+      print("tempY 值: " + tempY);
+    }
+  }
+
+  ※以上便可以從函式中回傳多個值來用
+
+
+<ref>
+  
+  //腳本 : LearnRef
+  public void HandleMoney(ref int getMoney)
+  {
+    getMoney += 10;
+  }
+
+  ※在一般的函式裡，getMoney是屬於區域變數，所以只在HadnleMoney
+    函式裡值會變更，原本被傳入的變數無法被更改任何值。
+    但加入 ref 之後，被傳入的值也會隨著該區域變數 GetMoney 同時
+    變更!!
+
+  //另一個腳本
+  public LearnRef LR;
+  public int Money = 100;
+
+  void Update()
+  {
+    if(Input.GetKeyDown(KeyCode.D))
+    {
+      LR.HandleMoney(ref Money);
+      print("錢 : " + Money);
+    }
+  }
+  ※此時傳入的變數 Money 的值也更著 GetMoney 一起變更了!!
+
+
+  <!!!注意!!!>
+  
+  //使用多載時
+  void X(out int a)
+  {
+    ...
+  }
+
+  void Y(ref int a)
+  {
+    ...
+  }
+  ※將會出現錯誤，因為電腦認為 out 和 ref 是同樣的函式
+-----------------------------------------------
+
+
+● 泛型
+-----------------------------------------------
+  //舉例:
+  //交換兩個變數的值，寫一個函式來做轉換
+  //但遇到想用在轉換其他類型的變數，就要重新寫一個函式的問題
+  //使用 <T> 就可以一個函式 多用~
+
+  public string A = "Apple", B = "Banana";
+  public int C = 9, D = 100;
+  public float E = 0.01f, F = 9.99f;
+
+               ↓不事先定義傳入變數的型態
+  void NewSwap<T>(ref T A, ref T B)
+  {
+      T temp = A;
+      A = B;
+      B = temp;
+  }
+
+  void Update()
+  {
+      if (Input.GetKeyDown(KeyCode.Alpha1))
+      {
+          NewSwap<string>(ref A, ref B);
+      }
+
+      if (Input.GetKeyDown(KeyCode.Alpha2))
+      {
+          NewSwap<int>(ref C, ref D);
+      }
+
+      if (Input.GetKeyDown(KeyCode.Alpha3))
+      {
+          NewSwap<float>(ref E, ref F);
+      }
+  }
+-----------------------------------------------
+
+
+● Nullable Types
+-----------------------------------------------
+  ※讓變數初始值為Null，不必先給一個值
+  ※以下用 Int 為例： 
+
+  (1)
+     public int? y;  //沒有給予出值
+     
+     print(y);     //結果為 Null
+
+
+  (2)
+     //陣列用法
+     public int?[] x = new int?[5];
+
+     for (int i = 0; i < x.Length; i++)
+     {
+         x[i] = i+1;    //事後再賦予值
+     }
+
+  (3)
+     //如果為Null 給一個值
+     public int? y;
+
+     y = y ?? 18;   //如果為空值，y等於18
+-----------------------------------------------
+
+
+● 傳值判斷 如果條件達成才給變數傳值
+-----------------------------------------------
+faceRight = horizontal > 0f;  //如果值大於0f就傳值進去
+-----------------------------------------------
+
+
+● 遞歸  (一種邏輯概念)  
+-----------------------------------------------
+　//類似for迴圈
+  //Function在達成任務前，重複呼叫自己
+
+  void Start (){
+	Counting (10);
+  }
+
+  void Counting(int num)
+  {
+	if (num == 1) {
+		print (num);
+	} else {
+		print (num);
+		Counting (num - 1);  //直到等於1之前 重複呼叫自己做運算
+	}
+  }
+
+
+  <其他範例>
+  //從1累加到N的總和
+  public int SumFrom1ToX(int x)
+  {
+    if(x == 1)
+    {
+    	return 1;
+    }
+    else
+    {
+	int result = x + SumFrom1ToX(x-1);  //用一層包一層去計算，此方法稍占記憶體
+	return result;
+    }
+  }
+
+-----------------------------------------------
+
+
+● **
+-----------------------------------------------
+
+-----------------------------------------------
+
+
+● **
+-----------------------------------------------
+
+-----------------------------------------------

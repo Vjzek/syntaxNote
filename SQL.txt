@@ -1,0 +1,253 @@
+﻿● 讓 '_' 不是萬用字元
+---------------------------------------
+※假設要搜尋的字串是 "SA_" 開頭 + 其他字串
+  但是"_"會被當成"SA"加上任一字元，因此必
+  需告訴編譯器這裡的 "_" 是字元。
+
+SELECT place_id FROM place
+WHERE place_id LIKE 'SA\_%' ESCAPE '\'
+
+※用ESCAPE定義'\'後面的'_'是字元而非萬用字
+---------------------------------------
+
+
+● 判斷欄位是否為空值(Null)
+---------------------------------------
+※找出欄位是空值的資料
+SELECT name FROM class
+WHERE grade IS NULL
+
+※找出欄位不是空值的資料
+SELECT name FROM class
+WHERE grade IS NOT NULL
+---------------------------------------
+
+
+● 找出特定的資料(IN)
+---------------------------------------
+※找出欄位的值是(1,2,3)的每一筆資料
+SELECT * FROM product
+WHERE product_id IN(1,2,3)
+
+※找出欄位的值不是(1,2,3)的每一筆資料
+SELECT * FROM product
+WHERE product_id NOT IN(1,2,3)
+---------------------------------------
+
+
+● 指出範圍內資料(BETWEEN...AND)
+---------------------------------------
+※找出薪資在2000~3000之間的員工名字
+SELECT name FROM employees
+WHERE salary BETWEEN 2000 AND 3000
+---------------------------------------
+
+
+● 排序(ORDER BY)
+---------------------------------------
+※由小到大，依照學號排序一年級學生
+SELECT * FROM students
+WHERE grade = 1
+ORDER BY student_id
+
+※由大到小，依照學號排序一年級學生
+SELECT * FROM students
+WHERE grade = 1
+ORDER BY student_id DESC
+
+※多欄位排序，先依照年級排完再排學號
+SELECT * FROM students
+ORDER BY grade, student_id
+---------------------------------------
+
+
+● 函數
+---------------------------------------
+※單列函數
+字元函數：
+1. LOWER     (轉成小寫)
+2. UPPER     (轉成大寫)
+3. INITCAP   (第一個字大寫)
+
+4. CONCAT    (將兩組字串結合在一起) 
+5. SUBSTR    (擷取字串中的某部分，第一個從1開始)
+   →SELECT SUBSTR('Hello',4) FROM dual   => ld
+   →SELECT SUBSTR('Hello',1,2) FROM dual => He
+   * 負數表示從右邊開始數
+   →SELECT SUBSTR('Hello',-3) FROM dual => llo
+   →SELECT SUBSTR('Hello',-3,2) FROM dual => ll
+6. LENGTH    (統計字串長度)
+7. INSTR     (找出字元在字串的第幾個位置)
+8. LPAD      (字串長度不夠時，從左邊補滿)
+   →SELECT LPAD(1000+200.55,10,'*') => ***1200.55
+     *當長度不足10個字，用*號補滿左邊剩下的位置
+9. RPAD      (字串長度不夠時，從右邊補滿)
+   →SELECT RPAD(1000+200.55,10,'*') => 1200.55***
+     *當長度不足10個字，用*號補滿右邊剩下的位置
+10.TRIM      (將指定的1個字元從字串頭尾刪除)
+   →SELECT TRIM('H' FROM HelloH) FROM dual => ello
+   →SELECT TRIM(leading 'H' FROM HelloH) FROM dual => elloH
+   →SELECT TRIM(trailing 'H' FROM HelloH) FROM dual => Hello
+11.REPLACE   (
+※測試時需要使用SELECT語法，否則無法執行
+  SELECT LOWER('TEST WORD') FROM dual
+  * dual是 Oracle提供的虛擬表格
+
+
+字元函數：
+1. ROUND     (將值四捨五入到指定小數點位數)
+   →ROUND(45.926, 2) => 45.93 (.6四捨五入)
+   →ROUND(45.926, 0) => 46    (.9四捨五入)
+   →ROUND(45.926,-1) => 50    (5四捨五入4進位)
+2. TRUNC     (將值截斷為指定的小數位數)
+   →TRUNC(45.923, 2) => 45.92
+   →TRUNC(45.923)    => 45
+   →TRUNC(45.923,-1) => 40(-1表示從整數開始算)
+3. MOD       (傳回除法的餘數)
+   →MOD(1600, 300) => 100
+
+
+※群組函數
+1. AVG      (取平均值)
+2. COUNT    (計算有幾筆資料,欄位為null時不列入計算)
+   * 如果要把null值的欄位轉換成0，可以用NVL
+     →SELECT NVL(grade, 0) FROM table
+3. MAX      (找出最大值)
+4. MIN      (找出最小值)
+5. STDDEV   (
+6. SUM      (計算總合)
+7. VARIANCE (
+※語法:
+  SELECT * FROM table
+  WHERE ... (條件句)
+  GROUP BY ...
+  HAVING ... (條件句)
+  ORDER BY ...
+
+※分組(GROUP BY)
+EX:求各部門的平均薪資
+SELECT AVG(salary) FROM table
+GROUP BY department_id
+
+EX:先以部門分組，再以職位分組
+SELECT department_id, job_id, SUM(salary) FROM table
+GROUP BY department_id, job_id;
+---------------------------------------
+
+
+● 去除重複值的欄位(DISTINCT)
+---------------------------------------
+※ 列出表格有幾個年級(grade)
+SELECT DISTINCT grade FROM table
+
+※ 計算總共有幾個年級(grade)
+SELECT COUNT(DISTINCT grade) FROM table
+---------------------------------------
+
+
+● 取得多個表格資料(JOIN)
+---------------------------------------
+※將兩個標格的資料「自動」關聯並呈現(NATURAL JOIN)
+SELECT depart_id, depart_name, local_id, city
+FROM departments NATURAL JOIN locations;
+
+※將兩個標格的資料「手動」關聯並呈現(JOIN...USING)
+SELECT employees_id, department_name
+FROM employees JOIN departments
+USING (department_id)
+
+※使用代號方便辨識欄位屬於哪張表格
+SELECT e.employee_id, d.location_id
+FROM employees e JOIN departments d
+USING(department_id)
+
+※使用ON關聯兩個表格的欄位(代替USING的用法)
+SELECT e.employee_id, d.location_id
+FROM employees e JOIN departments d
+ON (e.department_id = d.department_id)
+
+※外部JOIN
+1. LEFT OUTER JOIN
+   以左邊的表格為主，右邊表格就算沒有資料，
+   也會列出左邊表格的資料。
+   →SELECT count(distinct d.department_id)
+     FROM employees e LEFT OUTER JOIN departments_d
+     ON (e.department_id = d.department_id);
+2. RIGHT OUTER JOIN
+   以右邊的表格為主，左邊表格就算沒有資料，
+   也會列出右邊表格的資料。
+   →SELECT count(distinct d.department_id)
+     FROM employees e RIGHT OUTER JOIN departments_d
+     ON (e.department_id = d.department_id);
+3. FULL OUTER JOIN
+   將兩個表格聯集。
+   →SELECT e.employee_id, d.department_id
+     FROM employees e FULL OUTER JOIN departments d
+     ON (e.department_id = d.department_id)
+---------------------------------------
+
+
+● 子查詢
+---------------------------------------
+※單列子查詢：子查詢回傳的資料只有1筆
+EX：找出公司員工誰的薪水比小明多
+SELECT name, salary FROM employees
+WHERE salary > (SELECT salary
+                FROM employees
+                WHERE name = '小明')
+
+※多列子查詢：子查詢回傳的資料有很多筆
+1.IN：等於清單中的任何成員
+  EX：找出每個部門薪資最低的員工資料。
+  SELECT name, salary, department_id
+  FROM employees
+  WHERE salary IN( SELECT MIN(salary)
+                   FROM employees
+                   GROUP BY department_id)
+  ※如果要查「不是」最低薪資的員工，只要將
+    IN 改成 NOT IN 即可。
+    
+2.ANY：將某數值與子查詢傳回的各個值做比較
+  EX：大於子查詢回傳清單中的最小值。
+  SELECT employee_id, name, job_id, salary
+  FROM employees
+  WHERE salary > ANY
+                 (SELECT salary
+                  FROM employees
+                  WHERE job_id='IT_PROG')
+  AND job_id <> 'IT_PROG'
+
+3.ALL：將某數值與子查詢傳回的所有值作比較
+  EX：大於子查詢回傳清單中的最大值。
+  SELECT employee_id, name, job_id, salary
+  FROM employees
+  WHERE salary > ALL
+                 (SELECT salary
+                  FROM employees
+                  WHERE job_id='IT_PROG')
+  AND job_id <> 'IT_PROG'
+
+---------------------------------------
+
+
+● 集合
+---------------------------------------
+1. UNION / UNION ALL(聯集)
+UNION：重複的資料只會顯示一次。
+UNION ALL：不管有沒有重複都會顯示。
+  SELECT employee_id, job_id
+  FROM employees
+  WHERE employee_id = 200
+  UNION
+  SELECT employee_id, job_id
+  FROM job_history
+  WHERE employee_id = 200;
+  ※如果要將資料進行排序，ORDER BY
+    必須放在整段敘述句的最下方。
+
+2. INTERSECT(交集)：只顯示重複的。
+   ※不會忽略Null值 (Null和Null視為重複)
+
+3. MINUS(差集)：A-B
+
+---------------------------------------

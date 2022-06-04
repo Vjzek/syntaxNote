@@ -1,0 +1,1103 @@
+﻿● 命名規則
+-------------------------------------------
+[1] 只能由字母、數字或底線組成。
+
+[2] 須以英文字母開頭。
+
+[3] 英文沒有大小寫之分，也就是sum與SUM是
+    相同的。
+-------------------------------------------
+
+
+● 註解
+-------------------------------------------
+    '第一行 註解內容...
+    '第二行 註解內容...
+    ' ...
+-------------------------------------------
+
+
+● 資料型態
+-------------------------------------------
+* Integer
+  →Int(3.14) : 向下取整數(無條件捨棄) => 3
+* long
+* Single
+* Double
+* Boolean
+* Char
+* String
+  →Len(字串) ：回傳字串有幾個字
+  →LenB(字串)：回傳字串有幾個Bytes
+* Byte
+* Objec
+* Structure
+* Variant
+  →除了固定長的String和自定義的資料結構外
+    ，可以儲存所有資料型態的資料。
+* 日期類型
+  1. Date   ：可以儲存包含日期時間類型
+     →Dim d as date
+       d = #2/23/2013 2:13:34 PM#
+     →Print date
+       輸出結果：2013/10/15
+     ※Date是「資料型態」也是「默認函式」
+  2. Time
+     →Print time
+       輸出結果：5:05:53
+     ※time是「資料型態」也是「默認函式」
+  3. Year
+     →Print year(Now)
+  4. Month
+  5. Day
+  6. Hour
+  7. Minute
+  8. Second
+  10.Weekday
+     →Print Weekday(Now, vbMonday)
+  11.cdate    ：把字串類型轉成日期類型
+     →Dim d as date
+       d = cdate("2013-01-01 12:13:14")
+  12.DateAdd  ：日期時間的增加/減少函數
+     →Print dateAdd("d", 2, Now)
+     ※ 顯示系統時間(Now) + 「後」2天的日期
+     →Print dateAdd("d", -2, Now)
+     ※ 顯示系統時間(Now) + 「前」2天的日期
+  13.DateDiff ：求兩個日期的差幾年/月/日/.../秒)
+     →Dim d1, d2 as Date
+       d1 = cdate("2013-02-23 14:13:34")
+       d2 = cdate("2013-02-23 14:13:50")
+       Print("s", d1, d2)
+       輸出結果：16 (PS 秒)
+       * "s" = 秒
+         "n" = 分
+         "h" = 時
+        "ww" = 周
+         "w" = 星期幾
+         "d" = 日
+         "m" = 月
+         "y" = 一年的天數
+         "q" = 季
+      "yyyy" = 年
+
+  ※ 求系統時間
+     (1) Print Date & " " & Time
+     (2) Print Now
+-------------------------------------------
+
+
+● 宣告變數
+-------------------------------------------
+[1] 宣告Int變數
+    Dim 變數名稱 As Integer
+    Dim 變數名稱 As Integer = 10
+    
+    ※ Integer可以用 % 符號代替
+       Dim n% = 10
+    ※ String可以用 $ 符號代替
+       Dim s$ = "Hello"
+
+[2] 多個變數宣告
+    Dim A, B, C As Integer
+
+[3] 冒號：將多行敘述寫在同一行時當分隔符號
+    Dim i, sum As Integer
+    i = 0 : sum = 0
+
+[4] Public 修飾字可讓變數跨模組使用
+    Public Dim A As Integer
+-------------------------------------------
+
+
+● 強制轉型
+-------------------------------------------
+[1] 將字串轉換成數字
+    a = 10
+    b = Cint("100“)
+    Console.WriteLine( a + b )
+    執行結果： 110
+
+[2] 將數字轉換成字串
+    a = CStr(10)
+    b = "100"
+    Console.WriteLine( a & b )
+    執行結果： 10100
+    ※CStr()可將任意類型轉成字串
+    ※ Str()只能將數值類型轉成字串
+
+※  字串與字串連接
+    a = "Hello"
+    b = "World"
+    c = a & b
+    Console.WriteLine(c)
+    執行結果： "HelloWorld"
+
+※  傳回字串或字串變數的字元數(或稱長度)
+    LEN(ID)
+※  傳回字串或字串變數第m個位置起共n個
+    MID(ID,m,n)
+※  傳回字串「左邊」n個字元
+    Left(字串變數, n)
+※  傳回字串「右邊」n個字元
+    Right(字串變數, n)
+
+
+[3] 將字元轉換成單精度數值
+    CSng()
+
+[4] 將數值轉換成字元
+    Chr() 
+    Console.WriteLine(chr(65))
+    執行結果： "A"
+
+[5] 將字元轉換成數值(ASCII值)
+    Asc() 
+    Console.WriteLine(Asc("A"))
+    執行結果： 65
+
+[6] 印出n個空白
+    Space(n) 
+
+[7] 將文字轉成數值
+    VAL(c) 'VAL("123aa4") 輸出：123
+    ※一碰到文字就停止，所以第一個字是文字時
+      就算後面有數字也不被轉換了。
+
+[8] 將字母轉換大小寫
+    Ucase(字串)：轉換成大寫
+    Lcase(字串)：轉換成小寫
+
+[9] 依照指定符號分割字串 Split
+    Dim a as String = "abc,efg"
+    Dim b() as String = split(a, ",")
+    Console.WriteLine("b(0) = " & b(0))
+    Console.WriteLine("b(1) = " & b(1))
+    輸出結果：b(0) = abc
+              b(1) = efg
+
+[10] 將陣列轉換成字串 Join
+     Dim str As String
+     Dim n() As Variant
+     n = Array(11, "22", "aa")
+     str = Join(n, ",")        '用 "," 號連接
+     Print str
+     輸出結果：11,22,aa
+
+[11] 從字串中尋找指定的文字 
+     Instr      ：從字串左邊查詢，並傳回位置 
+     →Instr(從第幾個位置開始找, 字串變數, 要找的字串, vbBinaryCompare)
+
+     InstrRev() ：從字串右邊查詢，並傳回位置 
+     →InstrRev()(字串變數,, 要找的字串, 從第幾個位置開始找,  vbBinaryCompare)
+     ※ 位置從1開始
+     ※ 沒有找到會回傳0
+   
+[12] 回傳字串有幾個字
+     InStrB()
+
+[13] 去除字串的空格
+     Trim()  ：去除字串兩邊的空格
+     ltrim() ：去除字串左邊的空格
+     rtrim() ：去除字串右邊的空格
+     
+     Dim a as String = " abc efg "
+     Console.WriteLine("|" & a & "|")
+     Console.WriteLine("|" & Trim(a) & "|")
+     Console.WriteLine("|" & lTrim(a) & "|")
+     Console.WriteLine("|" & rTrim(a) & "|")
+     輸出結果：| abc efg |  (原始)
+               |abc efg|    (刪除兩邊空格)
+               |abc efg |   (刪除左邊空格)
+               | abc efg|   (刪除右邊空格)
+-------------------------------------------
+
+
+● 輸出/輸入 文字
+-------------------------------------------
+[1] 將字串輸出到螢幕
+    Console.Write("字串")
+
+[2] 將字串輸出到螢幕，並加上換行的動作
+    Console.WriteLine (“字串”)
+
+[3] 從鍵盤讀入一個字元
+    變數名稱 = Console.Read()
+
+[4] 從鍵盤讀入一行字串
+    變數 = Console.ReadLine()
+
+※ 從鍵盤輸入的資料要找個變數接收，
+   不然會被丟棄。
+
+※ 補充Consloe.Write()可以對輸出做格式化
+   Console.Write("{0} * {1} = {2}", i, j, i * j)
+
+[5] 視窗互動
+    1. MsgBox() 
+       自VB6就有的指令，簡單易用。
+    2. MessageBox()
+       跟MsgBox()一樣的功能，但更強一些。
+    3. InputBox()
+       請使用者輸入訊息。
+-------------------------------------------
+
+
+● 編譯錯誤的提示種類
+-------------------------------------------
+[1] Syntax Error (語法錯誤)
+    不符合該語言規定的寫法，在執行前
+    都可被檢查出來。
+
+[2] Semantic Error (語意錯誤)
+    1. 是邏輯上的錯誤，系統無法查知。
+    2. 程式正常執行，但不是你要的結果。
+
+[3] RunTime Error (執行時期錯誤)
+    通常與系統環境有關，例如記憶體不夠了。
+-------------------------------------------
+
+
+● 自訂型態(Structure)
+-------------------------------------------
+[1] 自己定義新的複合資料當作一個新的形態
+    Structure student
+        Dim name As String
+        Dim age As Integer
+        Dim BMI As Single
+    End Structure
+    ※ 要寫在所有的程式段之外(sub、Function、main等)
+       ，通常在程式一開始的地方。
+
+[2] 建立自訂義物件
+    Dim stu1 As student
+    stu1.name = “Ben"
+    stu1.age = 20
+    stu1.BMI = 22.5
+
+-------------------------------------------
+
+
+● 運算子
+-------------------------------------------
+[1] 等  於： =
+    不等於： <>
+
+[2] LIKE 比較運算：功能強大的字串比較
+    =====================================
+    [符號]      [解釋]
+      ?          是否符合任何單一字元
+      *          是否符合一個或多個字元
+      #          是否符合任何數字
+      [字元集]   是否符合字元集中的內容
+      [!字元集]  是否不符合字元集中的內容
+    =====================================
+
+  Result = “J” Like “J”    =>True
+  Result = “J” Like “John”   =>False
+  Result = “John” Like “J?n” =>False
+  Result = “John” Like “J*n” =>True
+  Result = “J” Like “[A-M]”  =>True
+  Result = “J” Like “[!A-M]” =>False
+
+[3] &：可串接不同型態的資料
+       X = “ABC” & 123 & 3.14
+       結果為： ABC1233.14
+  
+    +：只能串接文字
+       X = “ABC” + 123 + 3.14
+       結果為： (錯誤訊息)
+
+    X = “ABC” + “123” + “3.14”
+    結果為： ABC1233.14
+
+[4] 運算優先順序
+    =====================================
+     ( )                  括符
+     ^                    次方
+     +、-                 正負號
+     *、/                 乘除
+     \                    整除
+     MOD                  餘數
+     +、-                 加減
+     &                    字串串接
+     =、<>、<、>、<=、>=  關係比較
+     NOT                  否
+     AND                  且
+     OR                   或
+     XOR                  互斥或
+    =====================================
+
+[5] Not 相反
+    Dim a as Boolean = true
+    Console.WriteLine(Not a)
+    輸出結果：false
+-------------------------------------------
+
+
+● 文字顏色
+-------------------------------------------
+[1] 輸入顏色的數值
+    物件名稱.BackColor = Color.FromArgb(r,g,b)
+
+[2] 輸入顏色的名稱
+    物件名稱.BackColor = Color.Aqua
+-------------------------------------------
+
+
+● 表單常用事件
+-------------------------------------------
+[1] Form_Load( )
+    表單被載入記憶體準備執行時觸發，有什麼
+    一開始就要設定或執行的寫在這裡，通常只
+    在開始時執行一次。
+
+[2] Form_Activate( )
+    如果有多重表單，當表單從非作用中表單變成
+    作用中表單時觸發(譬如被點選)，開始要執行
+    的動作寫在這裡。
+
+※  關閉表單
+        → 視窗名.Close()
+    <!> 若是多重表單程式，這只會關閉自己，但
+        不會結束程式，指令 END 才會完全結束
+        程式。   
+-------------------------------------------
+
+
+● 亂數(Random) 
+-------------------------------------------
+[1] Dim r As New Random()
+    r.next()  取得 0~2,147,483,647 間任一數
+  r.next(4) 取得 0~3 之間任一數
+  r.next(1,42) 取得 1~41 之間任一數
+  r.next(-5,6) 取得 -5~+5 之間任一數
+
+[2] Rnd
+    ※ Rnd可以產生 0<=Rnd<1之間的數
+    Randomize '以系統時間做為亂數的種子(減少重複機率)
+    Console.Write(Int(Rnd * 10)+1) '輸出介於1~10的數
+    Console.Write(Int(Rnd * 51)+5) '輸出介於5~55的數
+   
+-------------------------------------------
+
+
+● 程式語法
+-------------------------------------------
+[1] IF 邏輯
+    1.單行條件
+      If A > B Then A = 10
+
+    2.多行條件
+      If X >= 10 Then
+            A = A + 1
+            B = B + 1
+            C = C + 1
+      End If
+
+    3.Else語句
+      If A>500 Then 
+            A = A*0.8 
+      Else 
+            A = A*0.9
+
+    4. ElseIf語句
+       If ... Then
+           敘述一
+       ElseIf ... Then
+           敘述二
+       ElseIf ... Then
+           敘述三
+       Else
+           敘述四
+       End If
+
+    5.IIF簡短語法
+      Dim a As Integer = 10
+      Dim b As Integer = 5
+      Dim c As Integer
+      b = IIf(5>3, a, b)
+      執行結果：b = 10
+
+
+[2] Select 邏輯
+       [Case可接受的運算式]
+    ===================================
+      Case 100      直接寫出數值
+      Case "ABC"    直接寫出字元或字串
+      Case 1 To 5   是否介於某一範圍(Case "a" To "z")
+      Case 1, 2, 3  個別列舉
+      Case Is > 100 是否大或小於某一值
+    ===================================
+    Dim M As Integer
+    M = TextBox1.Text
+    Select Case M
+        Case 1, 2, 3
+            Label2.Text = "第一季"
+        Case 4 To 6
+            Label2.Text = "第二季"
+        Case 7
+            Label2.Text = "第三季"
+        Case 8, 9
+            Label2.Text = "第三季"
+        Case 10 To 12
+            Label2.Text = "第四季"
+        Case Is > 12
+            Label2.Text = "一年只有12個月"
+        Case Else
+            Label2.Text = "你輸入了什麼?"
+    End Select
+    ※ Case Else是可以省略的。
+    ※ 滿足「任一」條件後，就會直接跳到 End Select
+
+[3] For 邏輯
+    變數 = 起始值 To 終止值 Step 增/減量
+    1. For I = 1 To 10 Step 1
+           onsole.WriteLine(I)
+       Next I
+
+    2. For I = 1 To 10 Step 0.5
+           onsole.WriteLine(I)
+       Next I
+    
+    3. For I = 10 To 1 Step -1
+           onsole.WriteLine(I)
+       Next I
+
+    4. Exit For(強制跳脫迴圈)
+       For j = 1 To 10
+           Console.Write(j)
+           If j = 5 Then
+               Exit For
+           End If
+       Next
+       ※只能跳出所在的迴圈
+
+    5. Continue For
+       跳過For迴圈剩下的指令，回到For的
+       開頭，執行下一個For/Next迴圈。
+
+
+[4] While 邏輯
+    1. While i <= 10
+           Console.WriteLine(i)
+           i += 1
+       End While
+
+    2. Exit While(強制跳脫迴圈)
+
+
+[5] Do loop 邏輯
+※區分為前測式與後測式迴圈
+
+  1. 前測式：先判斷條件再執行迴圈
+     =================
+       Do While 條件
+       ：
+       ：
+       Loop
+     =================
+       Do Until 條件
+       ：
+       ：
+       Loop
+     =================
+
+  2. 後測式：先執行迴圈再判斷條件
+     =================
+       Do
+       :
+       :
+       Loop While 條件
+     =================
+       Do
+       ：
+       ：
+       Loop Until 條件
+     =================
+     ※While是條件為「真」時要重複
+                  為「假」時要離開
+
+     ※Until是條件為「假」時要重複
+                  為「真」時要離開
+
+  3. Exit Do(強制跳脫迴圈)
+
+  4. Continue Do
+     忽略之後的指令，跳回Do去執行。
+
+[6] For each 邏輯 (用於陣列)
+    Dim Arr() As Integer = {13, 25, 33}
+    Dim i As Integer
+
+    ※For Each 變數名稱 In 陣列名稱
+    For Each i In Arr
+	Console.WriteLine(a(i))
+    Next
+
+-------------------------------------------
+
+
+● 陣列
+-------------------------------------------
+[1] 一維陣列
+    Dim A(4) As Integer
+    ※共五個元素A(0)、A(1)、A(2)、A(3)、A(4)
+
+[2] 二維陣列
+    1. Dim A(2,2) As Integer 
+       ====================
+       A(0,0) A(0,1) A(0,2)
+       A(1,0) A(1,1) A(1,2)
+       A(2,0) A(2,1) A(2,2)
+       ====================
+    
+    2. Dim A(,) As Integer = {{13, 25}, {33, 14}}
+
+[3] 動態陣列
+    1. 使用ReDim敘述可重新定義陣列大小。
+       Dim A(5) As Integer
+             :
+       ReDim A(10)  -->重新宣告陣列大小為10
+       ※重新宣告後陣列內容將清空，全部重設為0
+       ※ReDim僅能改變陣列大小，不能改變陣列維度
+       ※對於多維陣列，ReDim僅能改變最後一個維度
+         的大小，否則會有錯誤訊息
+
+    2. 使用ReDim + Preserve敘述
+       ※使用Preserve指令即可保留原陣列內容
+       Dim A(5) As Integer
+       ReDim Preserve A(10)
+       ※重新宣告大小後，保留原陣列元素內容
+       ※若是增加，則多的部分初值為0
+       ※若是減少，則刪掉的部分其內容也丟失了
+
+[4] 相關指令
+    1. Erase：刪除陣列，釋放記憶體空間
+       Dim A(10) As Integer
+            :
+       Erase A  '刪除陣列
+
+    2. Clone()：複製陣列
+       Dim A() As String = {"劉", "和", "師"}
+       Dim B(2) As String
+            :
+       B = A.Clone() '將A陣列的內容複製到B陣列
+
+    3. 常用陣列屬性與方法
+       ==========================
+        Length       取得陣列長度
+        Rank         取得陣列維度
+        Clear        清除所有元素成預設值
+        Clone        複製整個陣列
+        Sort         將陣列進行排序
+        Reverse      反轉陣列中的元素
+        Indexof      傳回陣列中第一個與指定
+                     值相符的元素索引。
+        BinarySearch 對已排序的陣列進行二元
+                     搜尋，若找到則傳回索引
+                     值，否則就傳回負值。
+       ==========================
+
+[5] 求陣列的長度
+    1. Ubound()：上邊界的位置
+    2. Lbound()：下邊界的位置
+    
+    ※ 求陣列A的長度
+       Dim len as Integer = 0
+       len = Ubound(len) - Lbound(len) + 1
+-------------------------------------------
+
+
+● 副程式 & 函數
+-------------------------------------------
+[1] 副程式與函數最大的差別
+    ====================
+     副程式 沒有 傳回值
+     函數 可能有 傳回值
+    ====================
+
+[2] 副程式語法
+    1. Sub 副程式名稱()
+           :
+           :
+       End Sub
+
+    2. Sub 副程式名稱(ByVal 變數名 As 資料型態)
+           :
+           :
+       End Sub
+    ※ByVal：傳值，將參數的值傳給副程式或函數
+    ※ByRef：傳址，將參數的記憶體位址傳給副程
+             式或函數這是一般變數宣告後的狀況
+    ※若未宣告ByVal或ByRef，則視為ByVal
+    ※若未宣告參數型態，則視為與傳入型態相同
+
+[3] 函式語法
+    1. 沒有回傳值
+       Function 函數名稱(參數一, 參數二, ...)
+               :
+               :
+       End Function
+    ※若要傳遞一整個陣列，則使用陣列名稱即可，
+      且不管宣告為ByVal或ByRef，一律視為ByRef
+
+    2. 有回傳值
+       Function 函數名稱(參數一, ...)
+               :
+               :
+           Return 傳回值
+       End Function
+
+  2-1. 有回傳值 ※ VB6的寫法
+       Function 函數名稱(參數一, ...) As Integer
+           Dim sum as Integer
+               :
+               :
+           函數名稱 = sum '回傳值的寫法
+       End Function
+
+[4] 跳出副程式或函數
+    1. 跳出副程式
+       Exit Sub
+
+    2. 跳出函數
+       Exit Function
+-------------------------------------------
+
+
+● 檔案讀寫
+-------------------------------------------
+[1] 文字檔(.txt)讀取與寫入
+    取得檔案指標→開啟檔案→讀取/寫入→關閉檔案
+
+    1. 取得檔案指標
+       Dim fp As Integer
+           :
+       fp = FreeFile()
+    ※ FreeFile()函數會自動取得可用的代碼
+
+    2. 開啟檔案
+       Dim fname As String
+       fname = “d:\aaa.txt” ‘要開啟的檔案
+           :
+           :
+       FileOpen(fp, fname, OpenMode.Output)
+       ※ fp       : 檔案指標
+       ※ fname    : 檔案名稱
+       ※ OpenMode : 檔案開啟模式
+       ================================
+        Input 開啟檔案進行讀取存取權。
+        Output 開啟檔案進行寫入存取權。(覆蓋原內容)
+        Append 開啟並在文件最後的位置進行新增。(預設值)
+        Binary 二進位存取所開啟的檔案。
+        Random 開啟檔案進行隨機存取。
+       ================================
+       ※ Input、Output和Append 時，會使用
+          循序存取檔案，例如文字檔，而 Binary
+          用於二進位檔案存取， Random 用於隨機
+          檔案存取。
+       ※ 當循序存取檔案時，無法變更其資料。只
+          可以讀取資料、附加到檔案，或以新的資
+          料覆寫它。
+
+    3. 寫入檔案 
+       ※寫入檔案，並加入換行符號
+       WriteLine(fp, "要寫入的文字") 
+
+       ※寫入檔案，沒有換行符號
+       Write(fp, "要寫入的文字")
+
+    4. 讀取檔案
+       Input(fp, 變數)
+       ※ 讀取的文字會放入變數中，每次讀取
+          一行或逗點分隔之文字段落。
+       ※ 若某一行內容為:"AAA","BBB","CCC"
+          則一次Input只讀入"AAA"
+       
+    5. 關閉檔案
+       FileClose(fp)
+       ※ 檔案存取完畢應確實關閉檔案，釋放相關資源。
+       ※ 如果讀取檔案時不知道有多少資料，就不能使用
+          FOR迴圈。
+       ※ 使用EOF()函數(End Of File)，判斷是否已到達
+          檔案的最後。
+          EOF(檔案指標) '到達結尾回傳True，否則False
+
+[2] 檔案存取範例
+    1. 寫入檔案
+       Dim fname As String
+       Dim fp As Integer
+       fname = “d:\aaa.txt"
+       fp = FreeFile()
+       FileOpen(fp, fname, OpenMode.Output)
+       WriteLine(fp, "國立高商")
+       WriteLine(fp, "03-5522222")
+       WriteLine(fp, "中山路1號")
+       FileClose(fp)
+
+    2. 讀取檔案
+       Dim fname, x As String
+       Dim fp As Integer
+       fname = "d:\bbb.txt"
+       fp = FreeFile()
+       FileOpen(fp, fname, OpenMode.Input)
+       For i = 1 To 3
+              Input(fp, x)
+              Console.WriteLine(x)
+       Next
+       FileClose(fp)
+       Console.Read()
+
+  2-1. 讀取檔案，使用EOF()函數
+       Dim fname, x As String
+       Dim fp As Integer
+       fname = "d:\bbb.txt"
+       fp = FreeFile()
+       FileOpen(fp, fname, OpenMode.Input)
+       Do While Not EOF(fp)
+              Input(fp, x)
+              Console.WriteLine(x)
+       Loop
+       FileClose(fp)
+       Console.Read()
+
+    3. 常用File類別方法
+       ===============================
+       File.Exists(fname) 判斷檔案是否存在。
+       File.GetAttributes(fname) 取得檔案屬性。
+       File.GetCreationTime(fname) 取得檔案建立時間
+       File.GetLastAccessTime(fname) 取得檔案最後修改時間
+       ===============================
+       
+       Dim fname As String
+       fname = "d:\aaa.txt"
+       Console.WriteLine(File.Exists(fname))
+       Console.WriteLine(File.GetAttributes(fname).ToString)
+       Console.WriteLine(File.GetCreationTime(fname))
+       Console.WriteLine(File.GetLastAccessTime(fname))
+       Console.Read()
+
+
+[3] ※另一種寫法※
+    
+    1. <寫入> 
+    Open App.Path & "/t.txt" For Append As #1
+	Print #1 Text1.Text
+    Close #1
+
+    ※ 用App.Path打開根目錄下的t.txt檔(若沒有，會自動建立)
+    ※ For Append 表示用Append模式開啟檔案
+    ※ #1 是給打開的檔案一個稱呼 (1是自訂，#是必要符號)
+    ※ 用Print把Text1的文字存進t.txt檔裡。
+
+    2. <讀取>
+    Open App.Path & "/t.txt" For Input As #1	
+        Do Until EOF(1)
+            Dim str as String
+
+            Line Input #1, str '讀取一行
+	    List1.AddItem str  '把str存入List元件
+        Loop
+    Close #1
+-------------------------------------------
+
+
+● 資料結構
+-------------------------------------------
+[1] 堆疊(Stack)-程式碼
+    Dim S(0) As Integer
+    Sub Main()
+        PUSH(20) : PUSH(15) : PUSH(5) : PUSH(62)
+        PrintS()
+        POP() : POP()
+        PrintS()
+        Console.Read()
+    End Sub
+
+    Sub PUSH(x) '存入資料，陣列大小動態增加
+        ReDim Preserve S(UBound(S) + 1)
+        S(UBound(S)) = x
+        Console.WriteLine("增加一個資料:" & x)
+    End Sub
+
+    Sub POP() '取出資料，要注意是否已空
+        If UBound(S) >= 1 Then
+            Console.WriteLine("取出一個資料:" & S(UBound(S)))
+            ReDim Preserve S(UBound(S) - 1)
+        Else
+            Console.WriteLine("Stack是空的")
+        End If
+    End Sub
+
+    Sub POP() '取出資料，要注意是否已空
+        If UBound(S) >= 1 Then
+            Console.WriteLine("取出一個資料:" & S(UBound(S)))
+            ReDim Preserve S(UBound(S) - 1)
+        Else
+            Console.WriteLine("Stack是空的")
+        End If
+    End Sub
+
+    Sub PrintS() '印出堆疊內容
+        Console.WriteLine("Stack內容:")
+        For i = UBound(S) To 1 Step -1
+            Console.WriteLine(S(i))
+        Next
+    End Sub
+
+
+[2] 佇列(Queue)-程式碼
+    Dim Q(10), Front, Rear As Integer
+    Sub Main()
+        Front = 0 : Rear = 0
+        Enqueue(20) : Enqueue(15) : Enqueue(5) : Enqueue(62)
+        PrintQ()
+        Dequeue() : Dequeue()
+        PrintQ()
+        Console.Read()
+    End Sub
+
+    Sub Enqueue(x) '存入資料，往後移動rear指標
+        If Rear <= 10 Then
+            Q(Rear) = x
+            Rear += 1
+            Console.WriteLine("增加一個資料:" & x)
+        Else
+            Console.WriteLine("Queue已經滿了")
+        End If
+    End Sub
+
+    Sub Dequeue() '取出資料，往前移動Front指標
+        If Front < Rear Then
+            Console.WriteLine("取出一個資料:" & Q(Front))
+            Front += 1
+        Else
+            Console.WriteLine("Queue是空的")
+        End If
+    End Sub
+
+    Sub PrintQ() '印出佇列內容
+        Console.WriteLine("Queue內容:")
+        For i = Front To Rear - 1
+            Console.WriteLine(Q(i))
+        Next
+    End Sub
+
+
+[3] 氣泡排序法(Bubble Sort)-程式碼
+    ※ 每次比較相鄰的兩個元素，如果他們
+       的順序錯誤就把他們交換過來。
+    ※ 簡單，但效率欠佳，只適用於少量資料。
+
+    Dim A() As Integer = {2, 5, 7, 3, 1, 9}
+    Dim tmp As Integer
+    For i = 1 To UBound(A)
+        For j = 0 To UBound(A) - i
+            If A(j) > A(j + 1) Then
+                tmp = A(j)
+                A(j) = A(j + 1) ‘交換兩元素
+                A(j + 1) = tmp
+            End If
+        Next j
+    Next i
+
+
+[4] 選擇排序法(Selection Sort)-程式碼
+    ※ 先假設第一個元素是最小的，依序向後
+       掃描個元素，若有更小的就記錄起來，
+       最後和第一個元素互換位置，完成一個
+       巡迴，然後第二個元素，依此類推。
+
+    Sub selection(Array, i, N) '選擇排序一個循回
+        Dim index, k, tmp As Integer
+        index = i '現在位置
+        k = i + 1 '尋找範圍：現在位置之後到陣列結尾
+        While k <= N '尋找比現在元素更小的值，並記錄位置
+            If Array(k) < Array(index) Then index = k
+            k += 1
+        End While
+        If index <> i Then '如果有記錄到更小的值就交換，否則略過
+            tmp = Array(i)
+            Array(i) = Array(index)
+            Array(index) = tmp
+        End If
+    End Sub
+
+
+[5] 插入排序法(Insertion Sort)-程式碼
+    ※ 假設由小到大排序，每個元素和其左邊
+       比較，若比左側小則交換，直到比左側
+       大為止。
+
+    Sub insert(Array, i) '插入排序法一個循回
+        Dim k, tmp As Integer
+        k = i
+        While k >= 1 '從第i個位置開始向前依序比較
+            If Array(k) < Array(k - 1) Then '比左側小則交換兩元素
+                tmp = Array(k - 1)
+                Array(k - 1) = Array(k)
+                Array(k) = tmp
+            Else '否則結束本pass
+                Exit While
+            End If
+            k = k - 1
+        End While
+    End Sub
+
+[6] 快速排序法(Quick Sort)
+    ※ 快速排序法的原理是選定一個數X
+       (稱「基準」pivot)，然後設法將
+       數列分成三份。
+    ※ 1.令數列中最左邊的數為X(pivot)。
+     2.設立兩個指標i和j。
+   3.將i往右移，直到找到第一個A(i)>=X為止。
+   4.將j往左移，直到找到第一個A(j)<=X為止。
+   5.將A(i)與A(j)互換。
+   6.重複以上動作直到i>=j為止。
+   7.將X與A(i)互換。
+
+[7] 合併排序法(Merge Sort)
+    ※ 合併排序法是依據"合併"來排序的，假設
+       有兩個已經排好的數列，就可以很容易的
+       將兩個數列合併成一個排序好的數列。
+    ※ 採用先打散，在合併的方式，稱為
+       divide and conquer。
+    ※ 一般都以遞迴來實現。
+
+-------------------------------------------
+
+
+● Print 語句
+-------------------------------------------
+[1] 在 Form_Load() 內寫上：
+    Show
+    Print "Hello World!"
+    Print "YA~~~"
+    ※ 可以直接在表單視窗上印出文字。
+    ※ Print完會自動換行
+    ※ 在Load事件需搭配Show才能顯示Print的文字
+       (其他事件下直接用Print即可)
+
+    ※ 可以使用 Cls 清除Print的文字
+-------------------------------------------
+
+
+● 輸入視窗 InputBox
+-------------------------------------------
+※ 會彈出一個視窗，可以輸入文字
+
+   Dim pass As String
+   pass = InputBox("輸入密碼")
+   
+   '如果密碼="123"，開啟「視窗2」並關閉「視窗1」
+   If pass = "123" Then 
+	Form2.Show
+     	Unload Form1
+   End If
+-------------------------------------------
+
+
+● 動態載入圖片 LoadPicture
+-------------------------------------------
+   Print App.Path '可以顯示專案的路徑
+   Image1.Picture = LoadPicture(App.Path & "/cat.jpg")
+-------------------------------------------
+
+
+● 視窗邊界(邊框)座標
+-------------------------------------------
+[1] 內框寬度  form1.ScaleWidth
+    →Print form1.ScaleWidth
+-------------------------------------------
+
+
+● 程式碼斷行繼續寫
+-------------------------------------------
+[1] 使用底線符號 "_"
+    1. 正常寫法
+    If arr(0) = "Hello" And arr(1) = "World" Then
+                 ...
+    End If
+
+    2. 斷行寫法，加上底線符號
+    If arr(0) = "Hello" _
+       And arr(1) = "World" Then
+                 ...
+    End If
+-------------------------------------------
+
+
+● 顏色自訂函數 RGB
+-------------------------------------------
+[1] 隨機決定Shape的顏色
+    Randomize
+    Shape1.FillColor = RGB(Rnd*255, Rnd*255, Rnd*255)
+-------------------------------------------
+
+
+● 鍵盤偵測
+-------------------------------------------
+[1] VB有兩種偵測按鍵的方式
+    1. KeyPress(KeyAscii As Integer)
+    2. KeyUp(KeyCode As Integer, Shift As Integer)
+    ※ 使用KeyAscii時會區分輸入的大小寫。
+    ※ 使用KeyCode只會辨識按下的鍵，
+       輸入 a 和 A 會被判斷為同一個鍵。
+-------------------------------------------
+
+
+● 用VB執行批次檔 (.bat)
+-------------------------------------------
+[1] 呼叫「cmd」執行瀏覽器到指定網址
+    Shall "@explorer http://www.google.com"
+    ※ 指令前面加上@可以在「cmd」不顯示
+       "explorer http://www.google.com"這串指令。
+
+[2] 用VB執行.bat檔 (Shall + 檔案路徑)
+    Shall App.Path & "/test.bat"
+-------------------------------------------
+
+
+● 動態生成控制元件 Load
+-------------------------------------------
+[1] 用程式碼生成9個Label(該物件取名為lblbox)
+    For i = 0 To 9 Step 1
+        Load lblbox(i)
+    Next i
+    ※ 這些生成的物件會重疊，所以要在修改每一個座標。
+-------------------------------------------
+
+
+● 視窗程式的工具列
+-------------------------------------------
+[1] 關鍵字：
+    1. toolbar
+    2. imagelist
+       ※這是有圖案式的功能按鈕
+       ※要純文字的可以從VB工具列的：
+         Tools→Menu Editor 去新增 (推薦用這個方式)
+    3. CommonDialog
+       →提供Windows系統的各種對話框
+       →EX：選擇 讀/存 檔路徑
+       →         文字字體格式
+       →         顏色
+    4. StatusBar
+       →狀態欄
+    5. drivelistbox
+       →下拉式選單：列出電腦有幾個磁碟
+       ※避免選到沒有的磁碟，EX：空的光碟機
+         使用 On Error Resume Next 程式就不會
+         崩潰。
+    6. drivelistbox
+       →選擇清單：電腦磁碟內的資料夾列表
+    7. filelistbox
+       →選擇清單：資料夾內的檔案列表
+       ※獲得檔案完整路徑：
+         File2.Path & "/" & File2.FileName
+-------------------------------------------
+
+
+● 
+-------------------------------------------
+
+-------------------------------------------
